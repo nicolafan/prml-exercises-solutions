@@ -1,0 +1,88 @@
+\section{Probability Distributions}
+
+\paragraph{Exercise 2.1}
+
+Considering the definition $Bern(x|\mu) = \mu^x(1-\mu)^{1-x}$, we have:
+
+\begin{align*}
+    \sum_{x=0}^{1}p(x|\mu) &= \mu^0(1-\mu)^{1-0} + \mu^1(1-\mu)^{1-1} = 1 - \mu + \mu = 1 \\
+    \E[x] &= 0\mu^0(1-\mu)^{1-0} + 1\mu^1(1-\mu)^{1-1} = \mu \\
+    var[x] &= \sum_{x=0}^{1} p(x) (x - \mu) ^2 = (1-\mu)(-\mu)^2 + \mu(1 - \mu)^2 = \mu (1 - \mu)\\
+    H[x] &= -\sum_{x=0}^{1} p(x) \ln p(x) = -\mu \ln \mu - (1 - \mu) \ln (1 - \mu)
+\end{align*}
+
+\paragraph{Exercise 2.2}
+
+The distribution is normalized if and only if $\sum_{x=0}^{N} p(x) = 1$, where the sum can be computed as follows:
+
+\begin{align*}
+    p(-1|\mu) + p(1|\mu) = \frac{1-\mu}{2} + \frac{1+\mu}{2} = 1
+\end{align*}
+
+The expectation value is given by:
+
+\begin{align*}
+    \E[x] = -1 \frac{1-\mu}{2} + 1 \frac{1+\mu}{2} = \mu
+\end{align*}
+
+The variance is given by:
+
+\begin{align*}
+    var[x] = (-1)^2 \frac{1-\mu}{2} + (1)^2 \frac{1+\mu}{2} - \mu^2 = 1 - \mu^2
+\end{align*}
+
+The entropy is given by:
+
+\begin{align*}
+    H[x] = -\sum_{x=-1}^{1} p(x) \ln p(x) = -\frac{1-\mu}{2} \ln \frac{1-\mu}{2} - \frac{1+\mu}{2} \ln \frac{1+\mu}{2}
+\end{align*}
+
+\paragraph{Exercise 2.3}
+
+We show that:
+
+\begin{align*}
+    \binom{N}{m} + \binom{N}{m-1} = \frac{N!(N-m+1) + N!m}{(N-m+1)!m!} = \frac{(N+1)!}{(N+1-m)!m!} = \binom{N+1}{m}\\
+\end{align*}
+
+Then we prove by induction $(2.263)$, where for $N=1$ we have:
+
+\begin{align*}
+    \sum_{m=0}^{1} \binom{1}{m}x^m = \binom{1}{0} x^0 + \binom{1}{1} x^1 = 1 + x = (1 + x)^1
+\end{align*}
+
+Assuming $(2.263)$ holds for $N$, we have:
+
+\begin{align*}
+    (1 + x)^N+1 = (1+x)(1+x)^N &= (1 + x) \sum_{m=0}^{N} \binom{N}{m} x^m \\
+    &= \sum_{m=0}^{N} \binom{N}{m} x^m + \sum_{m=0}^{N} \binom{N}{m} x^{m+1} \\
+    &= \sum_{m=0}^{N} \binom{N}{m} x^m + \sum_{m=1}^{N+1} \binom{N}{m-1} x^{m} \\
+    &= \binom{N}{0} x^0 + \sum_{m=1}^{N} \binom{N}{m} x^m + \sum_{m=1}^{N} \binom{N}{m-1} x^{m} + \binom{N}{N} x^{N+1} \\
+    &= \binom{N+1}{0} x^0 + \sum_{m=1}^{N} \binom{N+1}{m} x^m + \binom{N+1}{N+1} x^{N+1} \\
+    &= \sum_{m=0}^{N+1} \binom{N+1}{m} x^m
+\end{align*}
+
+proving the binomial theorem.
+
+Then we use it to show that the binomial distribution is normalized:
+
+\begin{align*}
+    \sum_{m=0}^{N} \binom{N}{m} \mu^m (1 - \mu)^{N-m} &= \sum_{m=0}^{N} \binom{N}{m} \mu^m \frac{(1 - \mu)^N}{(1 - \mu)^m} \\
+    &= (1 - \mu)^N \sum_{m=0}^N \binom{N}{m} \mu^m \frac{1}{(1-\mu)^m} \\
+    &= (1 - \mu)^N (1 + \frac{\mu}{1 - \mu})^N\\
+    &= 1
+\end{align*}
+
+\paragraph{Exercise 2.4}
+
+We differentiate $(2.264)$ with respect to $\mu$ to obtain:
+
+\begin{align*}
+    \frac{\partial}{\partial \mu} \sum_{m=0}^{N} \binom{N}{m} \mu^m (1 - \mu)^{N-m} = 0 &\iff \\
+    \sum_{m=0}^{N} \binom{N}{m} m \mu^{m-1} (1 - \mu)^{N-m} - \sum_{m=0}^{N} \binom{N}{m} \mu^m (N-m)(1 - \mu)^{N-m-1} = 0 &\iff \\
+    \E[m] - \frac{\mu N}{1-\mu} \sum_{m=0}^{N} \binom{N}{m} \mu^{m} (1 - \mu)^{N-m} + \frac{\mu}{1 - \mu} \sum_{m=0}^{N} \binom{N}{m} m \mu^m (1 - \mu)^{N-m} = 0 &\iff \\
+    \E[m] - \frac{\mu N}{1-\mu} + \E[m] \frac{\mu}{1 - \mu} = 0 &\iff \\
+    \E[m] = \frac{\mu N}{1 - \mu} (1 - \mu) = \mu N
+\end{align*}
+
+proving the result $(2.11)$.

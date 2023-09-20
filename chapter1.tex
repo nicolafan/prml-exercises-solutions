@@ -1,0 +1,89 @@
+\section{Introduction}
+
+\paragraph{Exercise 1.1}
+
+We seek to minimize $E$ by setting its derivative with respect to $\textbf{w}$
+to zero. We can consider each weight $w_i$ separately, so we have
+
+\begin{align*}
+    \frac{\partial E}{\partial w_i} = 0 &\iff
+    \sum_{n=1}^N \{[ w_0 + w_1x_n + w_2x_n^2 + \dots + w_Mx_n^M - t_n]x_n^i\} = 0\\
+    &\iff \sum_{n=1}^N \{w_0x_n^i + w_1x_n^{i+1} + w_2x_n^{i+2} + \dots + w_Mx_n^{i+M}\} = \sum_{n=1}^{N} (x_n)^it_n\\
+    &\iff \sum_{j=0}^M \{\sum_{n=1}^N (x_n)^{i + j} w_j\} = \sum_{n=1}^N (x_n)^it_n
+\end{align*}
+
+This result corresponds to the set of linear equations shown in the text.
+    
+\paragraph{Exercise 1.2}
+
+Again, we seek to minimize $\tilde{E}$, by setting each one of the partial derivatives
+with respect to $w_i$ to zero. We have
+
+\begin{align*}
+    \frac{\partial\tilde{E}}{\partial w_i} = 0 &\iff \sum_{n=1}^N \{[y(x_n, \textbf{w}) - t_n]x_n^i\} + \lambda w_i = 0\\
+    &\iff \sum_{n=1}^N \{[w_0 + w_1x_n + w_2x_n^2 + \dots + w_Mx_n^M - t_n]x_n^i\} + \lambda w_i = 0\\
+    &\iff \sum_{n=1}^N \{w_0x_n^i + w_1x_n^{i+1} + w_2x_n^{i+2} + \dots + w_Mx_n^{i+M}\} + \lambda w_i = \sum_{n=1}^N (x_n)^it_n\\
+\end{align*}
+
+The coefficients $\textbf{w} = \{w_i\}$ that minimize $\tilde{E}(\textbf{w})$ are given by the solution
+to the following set of linear equations:
+
+\begin{equation*}
+    \sum_{j=0}^M A_{ij}w_j + \lambda w_i = T_i
+\end{equation*}
+
+where $A_{ij} = \sum_{n=1}^N (x_n)^{i+j}$ and $T_i = \sum_{n=1}^N (x_n)^it_n$.
+
+
+\paragraph{Exercise 1.3}
+
+We want to determine the probability $p(apple)$ of randomly extracting an apple from
+a randomly chosen box.
+
+By the law of total probability, we have
+
+\begin{equation*}
+    p(apple) = p(apple, r) + p(apple, b) + p(apple, g)
+\end{equation*}
+
+where $r$, $b$ and $g$ denote the red, blue and green boxes, respectively.
+
+We also apply the product rule to each term of the sum, obtaining:
+
+\begin{align*}
+    p(apple) &= p(apple|r)p(r) + p(apple|b)p(b) + p(apple|g)p(g)\\
+    &= \frac{3}{10}\frac{1}{5} + \frac{1}{2}\frac{1}{5} + \frac{3}{10}\frac{3}{5}\\
+    &= \frac{3}{50} + \frac{1}{10} + \frac{9}{50}\\
+    &= \frac{17}{50}
+\end{align*}
+
+Furthermore, the exercise asks use to determine the probability of having selected the]
+green box, given that we have extracted an orange, corresponding to $p(g|orange)$.
+
+We can use Bayes' theorem to obtain
+
+\begin{equation*}
+    p(g|orange) = \frac{p(orange|g)p(g)}{p(orange)}
+\end{equation*}
+
+We already know $p(g)$, and we can compute $p(orange)$ in the same way we computed $p(apple)$,
+obtaining
+
+\begin{align*}
+    p(orange) &= p(orange, r) + p(orange, b) + p(orange, g)\\
+    &= p(orange|r)p(r) + p(orange|b)p(b) + p(orange|g)p(g)\\
+    &= \frac{4}{10}\frac{1}{5} + \frac{1}{2}\frac{1}{5} + \frac{3}{10}\frac{3}{5}\\
+    &= \frac{2}{25} + \frac{1}{10} + \frac{9}{50}\\
+    &= \frac{18}{50} = \frac{9}{25}
+\end{align*}
+
+Finally, we obtain:
+
+\begin{align*}
+    p(g|orange) &= \frac{p(orange|g)p(g)}{p(orange)}\\
+    &= \frac{\frac{3}{10}\frac{3}{5}}{\frac{9}{25}}\\
+    &= \frac{3}{10}\frac{3}{5}\frac{25}{9}\\
+    &= \frac{225}{450} = \frac{1}{2}
+\end{align*}
+
+\paragraph{Exercise 1.4}
