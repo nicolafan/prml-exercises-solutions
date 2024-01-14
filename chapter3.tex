@@ -1,0 +1,38 @@
+\section{Linear Models for Regression}
+
+\paragraph{Exercise 3.1}
+
+Considering the definition $\tanh(a) = \frac{1 - e^{-2a}}{1 + e^{-2a}}$, we have:
+
+\begin{align*}
+    2\sigma(2a) - 1 &= \frac{2}{1 + e^{-2a}} - 1 \\
+    &= \frac{2 - 1 - e^{-2a}}{1 + e^{-2a}} \\
+    &= \frac{1 - e^{-2a}}{1 + e^{-2a}} = \tanh(a)
+\end{align*}
+
+Hence, a general linear combination of tanh functions can be expanded as:
+
+\begin{align*}
+    y(x, \mathbf{u}) &= u_0 + \sum_{j = 1}^{M} u_j \tanh(\frac{x - \mu_j}{2s}) \\
+    &= u_0 + \sum_{j = 1}^{M} u_j (2\sigma(\frac{x - \mu_j}{s}) - 1) \\
+    &= u_0 - \sum_{j = 1}^{M} u_j + \sum_{j = 1}^{M} 2u_j \sigma(\frac{x - \mu_j}{s}) \\
+    &= w_0 + \sum_{j = 1}^{M} w_j \sigma(\frac{x - \mu_j}{s}) = y(x, \mathbf{w})
+\end{align*}
+
+where $w_0 = u_0 - \sum_{j = 1}^{M} u_j$ and $w_j = 2u_j$. This shows that a linear combination of tanh functions is equivalent to a linear combination of sigmoid functions.
+
+\paragraph{Exercise 3.2}
+
+Firstly, it is trivial to show the following identity:
+
+\begin{equation*}
+    \mathbf{\Phi}(\mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T \mathbf{v} = \mathbf{\Phi} \mathbf{\tilde{v}}    
+\end{equation*}
+
+where $\mathbf{\tilde{v}} = (\mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T \mathbf{v}$.
+
+Then we define a generic vector $\mathbf{y} = [y(\mathbf{x}_1, \mathbf{w}), \dots, y(\mathbf{x}_N, \mathbf{w})]^T$ and we have that it can be expressed as a linear combination of the columns of $\mathbf{\Phi}: \mathbf{y} = \mathbf{\Phi} \mathbf{w}$.
+By (3.12) our definition of the maximum likelihood solution is equivalent to $\mathbf{w}_{ML} = argmin_{\mathbf{w}} ||\mathbf{\Phi}\mathbf{w} - \mathbf{t}||^2$.
+
+We can now use the fact that $\mathbf{w}_{ML} = (\mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T \mathbf{t}$ to show that $\mathbf{y}$ is a projection of $\mathbf{t}$ onto the subspace spanned by the columns of $\mathbf{\Phi}$ (which is equal to the subspace $\mathcal{S}$).
+Indeed, we have that by (3.12) $\mathbf{y}' = \mathbf{\Phi}\mathbf{w}_{ML}$ is the orthogonal projection of $\mathbf{t}$ onto $\mathcal{S}$, since it is the vector in $\mathcal{S}$ that minimizes the distance from $\mathbf{t}$.
