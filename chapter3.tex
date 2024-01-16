@@ -36,3 +36,82 @@ By (3.12) our definition of the maximum likelihood solution is equivalent to $\m
 
 We can now use the fact that $\mathbf{w}_{ML} = (\mathbf{\Phi}^T\mathbf{\Phi})^{-1}\mathbf{\Phi}^T \mathbf{t}$ to show that $\mathbf{y}$ is a projection of $\mathbf{t}$ onto the subspace spanned by the columns of $\mathbf{\Phi}$ (which is equal to the subspace $\mathcal{S}$).
 Indeed, we have that by (3.12) $\mathbf{y}' = \mathbf{\Phi}\mathbf{w}_{ML}$ is the orthogonal projection of $\mathbf{t}$ onto $\mathcal{S}$, since it is the vector in $\mathcal{S}$ that minimizes the distance from $\mathbf{t}$.
+
+\paragraph{Exercise 3.3}
+
+We compute the gradient of $E_D(\mathbf{w})$:
+
+\begin{align*}
+    \nabla E_D(\mathbf{w}) &= \nabla (\frac{1}{2} \sum_{n = 1}^{N} r_n \{t_n - \mathbf{w}^T \pmb{\phi}(\mathbf{x}_n)\}^2) \\
+    &= \sum_{n = 1}^{N} r_n \{ [t_n - \mathbf{w}^T \pmb{\phi}(\mathbf{x}_n)] [-\pmb{\phi}(\mathbf{x}_n)^T] \} \\
+    &= - \sum_{n = 1}^{N} r_n \{ [t_n - \mathbf{w}^T \pmb{\phi}(\mathbf{x}_n)] \pmb{\phi}(\mathbf{x}_n)^T \}
+\end{align*}
+
+Setting the gradient to zero, we obtain:
+
+\begin{align*}
+    0 &= \sum_{n = 1}^{N} r_n \{ [t_n - \mathbf{w}^T \pmb{\phi}(\mathbf{x}_n)] \pmb{\phi}(\mathbf{x}_n)^T \} \\
+    &= \sum_{n = 1}^{N} r_n t_n \pmb{\phi}(\mathbf{x}_n)^T - \mathbf{w}^T \sum_{n = 1}^{N} r_n \pmb{\phi}(\mathbf{x}_n) \pmb{\phi}(\mathbf{x}_n)^T
+\end{align*}
+
+Finally, we solve for $\mathbf{w}$:
+
+\begin{align*}
+    \mathbf{w}^T(\sum_{n=1}^{N} r_n \pmb{\phi}(\mathbf{x}_n) \pmb{\phi}(\mathbf{x}_n)^T) = \sum_{n=1}^{N} r_n t_n \pmb{\phi}(\mathbf{x}_n)^T
+    \Rightarrow \mathbf{w}^* = (\pmb{\Phi}^{T}\pmb{\Phi}^{*})^{-1} \pmb{\Phi}^{T} \mathbf{t}^{*}
+\end{align*}
+
+where
+
+\begin{equation*}
+\pmb{\Phi} = \begin{bmatrix}
+    r_1\pmb{\phi}(\mathbf{x}_1)^T \\
+    \vdots \\
+    r_N\pmb{\phi}(\mathbf{x}_N)^T
+\end{bmatrix} \quad
+\mathbf{t}^{*} = \begin{bmatrix}
+    r_1 t_1 \\
+    \vdots \\
+    r_N t_N
+\end{bmatrix}
+\end{equation*}
+
+The weighted sum-of-squares is the result of applying (3.11) by modeling the target variable $t_n$ with the following distribution:
+
+\begin{equation*}
+    p(t_n | \mathbf{x}_n, \mathbf{w}) = \mathcal{N}(t_n | \mathbf{w}^T \pmb{\phi}(\mathbf{x}_n), r_n^{-1})
+\end{equation*}
+
+By considering only integer values for $r_n$, we can see that the weighted sum-of-squares allows us to repeat some data points more than others, by assigning a higher weight to the data points we want to repeat.
+
+\paragraph{Exercise 3.4}
+
+We expand the expected value of the error function with respect to the probability distribution of the noise $\pmb{\epsilon}$:
+\begin{align*}
+    &\mathbb{E}_{p(\pmb{\epsilon}) \sim \mathcal{N}(\pmb{\epsilon} ; \mathbf{0}, \sigma^{2} \mathbf{I})} [\bar{E}_D(\mathbf{w})] = \mathbb{E}_{p(\pmb{\epsilon})} [\frac{1}{2} \sum_{n = 1}^{N} \{w_0 + \sum_{i=1}^{D} w_i(x_i^n + \epsilon_i^n) \}^2] \\
+    &\propto \sum_{n=1}^{N} \mathbb{E}_{p(\pmb\epsilon)}[w_0^2 + \{\sum_{i=1}^{D}w_i(x_i^n+\epsilon_i^n)\}^2+t_n^2+2w_0\sum_{i=1}^{D}w_i(x_i^n+\epsilon_i^n)-2w_0t_n-2\sum_{i=1}^{D}w_i(x_i^n + \epsilon_i^n)t_n] \\
+    &= \sum_{n=1}^{N} w_0^2 + t_n^2 - 2w_0t_n + \mathbb{E}[\{\sum_{i=1}^{D}w_i(x_i^n+\epsilon_i^n)\}^2] + 2w_0\sum_{i=1}^{D}\{w_ix_i^n + \cancel{w_i\mathbb{E}[\epsilon_i^n]} \} - 2\sum_{i=1}^{D}w_it_nx_i^n + \cancel{w_it_n\mathbb{E}[\epsilon_i^n]}
+\end{align*}
+
+We further develop the term $\mathbb{E}[\{\sum_{i=1}^{D}w_i(x_i^n+\epsilon_i^n)\}^2]$:
+
+\begin{align*}
+    \mathbb{E}[&\{\sum_{i=1}^{D}w_i(x_i^n+\epsilon_i^n)\}^2] = \mathbb{E}[\sum_{i=1}^{D}\sum_{j=1}^{D}w_i(x_i^n + \epsilon_i^n)w_j(x_j^n + \epsilon_j^n)] \\
+    &= \sum_{i=1}^D\sum_{j=1}^{D}w_iw_j\mathbb{E}[x_i^nx_j^n + x_i^n\epsilon_j^n + \epsilon_i^nx_j^n + \epsilon_i^n\epsilon_j^n] \\
+    &= \sum_{i=1}^D\sum_{j=1}^{D}w_iw_j(\mathbb{E}[x_i^nx_j^n] + \cancel{\mathbb{E}[x_i^n\epsilon_j^n]} + \cancel{\mathbb{E}[\epsilon_i^nx_j^n]} + \delta_{ij}\sigma^2) \\
+    &= \sum_{i=1}^D\sum_{j=1}^Dw_iw_j(x_i^nx_j^n) + \sum_{i=1}^Dw_i^2\sigma^2 \\
+\end{align*}
+
+where $\delta_{ij}$ is the Kronecker delta. We can now substitute this result in the previous equation:
+
+\begin{align*}
+    &\mathbb{E}_{p(\pmb{\epsilon}) \sim \mathcal{N}(\pmb{\epsilon} ; \mathbf{0}, \sigma^{2} \mathbf{I})} [\bar{E}_D(\mathbf{w})] \\ &= \sum_{n=1}^{N} w_0^2 + t_n^2 - 2w_0t_n + \sum_{i=1}^D\sum_{j=1}^Dw_iw_j(x_i^nx_j^n) + \sum_{i=1}^Dw_i^2\sigma^2 + 2w_0\sum_{i=1}^{D}\{w_ix_i^n\} - 2\sum_{i=1}^{D}w_it_nx_i^n
+\end{align*}
+
+We notice the presence of the classical sum-of-squares error function, plus some additional terms:
+
+\begin{equation*}
+    \mathbb{E}_{p(\pmb{\epsilon}) \sim \mathcal{N}(\pmb{\epsilon} ; \mathbf{0}, \sigma^{2} \mathbf{I})} [\bar{E}_D(\mathbf{w})] = E_D(\mathbf{w}) + \sigma^2N\sum_{i=1}^Dw_i^2 = E_D(\mathbf{w}) + \sigma^2N ||\mathbf{w}||^2
+\end{equation*}
+
+showing that the expected value of the error function is equal to the sum-of-squares error function plus a regularization term.  
